@@ -1,0 +1,68 @@
+/* ══ Synthex Chat — Main CSS v2.0 ════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#09090F;
+  --bg2:#0F0F1A;
+  --bg3:#141422;
+  --surface:#1A1A2E;
+  --surface2:#202036;
+  --brand:#6366F1;
+  --brand-hover:#7577F3;
+  --accent:#A5B4FC;
+  --accent2:#818CF8;
+  --green:#10B981;
+  --green-l:#34D399;
+  --amber:#F59E0B;
+  --amber-l:#FCD34D;
+  --red:#EF4444;
+  --red-l:#FCA5A5;
+  --text:#F1F0FF;
+  --text2:#C4C2E8;
+  --text3:#7B78A8;
+  --border:rgba(165,180,252,0.08);
+  --border2:rgba(165,180,252,0.14);
+  --shadow:0 8px 32px rgba(0,0,0,0.5);
+  --sidebar-w:260px;
+  --header-h:52px;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Fira Code',monospace;
+}
+
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:14px;
+  font-weight:400;
+  line-height:1.6;
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(165,180,252,0.2);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(165,180,252,0.35);}
+
+/* Buttons */
+button{cursor:pointer;border:none;background:none;font-family:var(--sans);color:inherit;}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;
+  transition:all .15s ease;cursor:pointer;border:none;
+}
+.btn-primary{background:var(--brand);color:#fff;}
+.btn-primary:hover{background:var(--brand-hover);}
+.btn-ghost{background:transparent;color:var(--text3);border:1px solid var(--border2);}
+.btn-ghost:hover{color:var(--text);background:rgba(165,180,252,0.06);}
+.icon-btn{
+  width:32px;height:32px;border-radius:7px;display:grid;place-items:center;
+  color:var(--text3);transition:all .15s;cursor:pointer;border:none;background:none;
+}
+.icon-btn:hover{color:var(--text);background:rgba(165,180,252,0.08);}
+
+/* App Layout */
+.app{display:flex;height:100vh;overflow:hidden;position:relative;}

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthex — Developer Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<!-- ── SIDEBAR NAV ─────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="#" class="logo">
+      <div class="logo-mark">S</div>
+      <span class="logo-word">ynth<span class="logo-accent">ex</span></span>
+    </a>
+    <span class="sidebar-badge">Dashboard</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Overview</div>
+    <a class="nav-item active" href="#" data-page="overview">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+      Overview
+    </a>
+    <a class="nav-item" href="#" data-page="usage">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 11l4-4 3 3 3-5 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Usage & Analytics
+    </a>
+
+    <div class="nav-group-label" style="margin-top:1rem">API Keys</div>
+    <a class="nav-item" href="#" data-page="keys">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M6 10a4 4 0 100-8 4 4 0 000 8zM10 10l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      API Keys
+    </a>
+    <a class="nav-item" href="#" data-page="logs">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 4h11M2 7h11M2 10h7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Request Logs
+    </a>
+
+    <div class="nav-group-label" style="margin-top:1rem">Account</div>
+    <a class="nav-item" href="#" data-page="billing">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h13" stroke="currentColor" stroke-width="1.3"/></svg>
+      Billing & Plan
+    </a>
+    <a class="nav-item" href="#" data-page="settings">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Settings
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a class="nav-item" href="index.html" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M6 3H3a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1v-3M9 1h5m0 0v5m0-5L7 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Open Chat UI
+    </a>
+  </div>
+</aside>
+
+<!-- ── MAIN CONTENT ─────────────────────────────────── -->
+<main class="main-content" id="mainContent">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 4h14M2 9h14M2 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="topbar-breadcrumb">
+        <span class="breadcrumb-root">Synthex</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-page" id="breadcrumbPage">Overview</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="backend-status" id="backendStatus">
+        <span class="status-dot offline" id="statusDot"></span>
+        <span id="statusText">Checking...</span>
+      </div>
+      <button class="topbar-btn" id="settingsBtn">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Configure
+      </button>
+    </div>
+  </header>
+
+  <!-- ── PAGES ────────────────────────────────────────── -->
+
+  <!-- PAGE: Overview -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <h1 class="page-title">Overview</h1>
+      <p class="page-sub">Your Synthex platform at a glance</p>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(83,74,183,0.15);">⚡</div>
+        <div class="stat-body">
+          <div class="stat-label">Total Requests</div>
+          <div class="stat-value" id="statTotalReq">—</div>
+          <div class="stat-sub" id="statTotalReqSub">this month</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(29,158,117,0.15);">🧠</div>
+        <div class="stat-body">
+          <div class="stat-label">Total Tokens</div>
+          <div class="stat-value" id="statTotalTok">—</div>
+          <div class="stat-sub">input + output</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(200,122,21,0.15);">💰</div>
+        <div class="stat-body">
+          <div class="stat-label">Total Cost</div>
+          <div class="stat-value" id="statCost">—</div>
+          <div class="stat-sub">USD this month</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(160,158,245,0.15);">📊</div>
+        <div class="stat-body">
+          <div class="stat-label">Monthly Usage</div>
+          <div class="stat-value" id="statMonthly">—</div>
+          <div class="stat-sub" id="statMonthlyLimit">of — syntheses</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage progress bar -->
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-header">
+        <span class="card-title">Monthly Usage</span>
+        <span class="card-badge" id="planBadge">Free Plan</span>
+      </div>
+      <div class="usage-bar-wrap">
+        <div class="usage-bar">
+          <div class="usage-bar-fill" id="usageBarFill" style="width:0%"></div>
+        </div>
+        <div class="usage-bar-labels">
+          <span id="usageLabel">0 / 200 syntheses used</span>
+          <span id="usageResetLabel">Resets monthly</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">Quick Actions</span></div>
+      <div class="quick-actions">
+        <button class="quick-btn" onclick="navigate('keys')">
+          <span class="quick-icon">🔑</span>
+          <span>Create API Key</span>
+        </button>
+        <button class="quick-btn" onclick="navigate('usage')">
+          <span class="quick-icon">📊</span>
+          <span>View Usage</span>
+        </button>
+        <button class="quick-btn" onclick="window.open('index.html','_blank')">
+          <span class="quick-icon">💬</span>
+          <span>Open Chat</span>
+        </button>
+        <button class="quick-btn" onclick="window.open('docs.html','_blank')">
+          <span class="quick-icon">📖</span>
+          <span>API Docs</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Models overview -->
+    <div class="card" style="margin-top:1rem">
+      <div class="card-header"><span class="card-title">Available Models</span></div>
+      <div class="models-table-wrap">
+        <table class="data-table">
+          <thead><tr>
+            <th>Model</th><th>Tier</th><th>Agents</th><th>Speed</th><th>Plan</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="mono">synthex-nova-ultra</span></td>
+              <td><span class="badge-ultra">ULTRA</span></td>
+              <td>5</td><td>~8s</td>
+              <td><span class="badge-pro">Pro</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">synthex-nova-pro</span></td>
+              <td><span class="badge-pro-green">PRO</span></td>
+              <td>3</td><td>~3s</td>
+              <td><span class="badge-free">Free</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">synthex-nova-swift</span></td>
+              <td><span class="badge-flash">FLASH</span></td>
+              <td>1</td><td>&lt;1s</td>
+              <td><span class="badge-free">Free</span></td>
+            </tr>
+            <tr>
+              <td><span class="mono">synthex-nova-forge</span></td>
+              <td><span class="badge-code">CODE</span></td>
+              <td>2</td><td>~2s</td>
+              <td><span class="badge-free">Free</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: Usage & Analytics -->
+  <div class="page" id="page-usage">
+    <div class="page-header">
+      <h1 class="page-title">Usage & Analytics</h1>
+      <p class="page-sub">Detailed breakdown of your API usage</p>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:1rem">
+      <div class="stat-card">
+        <div class="stat-body">
+          <div class="stat-label">Requests Today</div>
+          <div class="stat-value" id="usageToday">—</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-body">
+          <div class="stat-label">Avg Latency</div>
+          <div class="stat-value" id="usageAvgLatency">—</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-body">
+          <div class="stat-label">Most Used Model</div>
+          <div class="stat-value" id="usageTopModel" style="font-size:1rem">—</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-body">
+          <div class="stat-label">Success Rate</div>
+          <div class="stat-value" id="usageSuccessRate">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Usage Over Time</span>
+        <span class="card-sub">Last 30 days</span>
+      </div>
+      <!-- Simple bar chart -->
+      <div class="chart-wrap" id="usageChart">
+        <div class="chart-placeholder">
+          <div class="chart-bars" id="chartBars"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <div class="card-header"><span class="card-title">Cost Breakdown</span></div>
+      <div id="costBreakdown">
+        <div class="empty-state">No usage data yet. Make your first API call to see breakdown.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: API Keys -->
+  <div class="page" id="page-keys">
+    <div class="page-header">
+      <h1 class="page-title">API Keys</h1>
+      <p class="page-sub">Manage your Synthex API keys</p>
+      <button class="btn-primary" id="createKeyBtn">+ Create New Key</button>
+    </div>
+
+    <!-- Create key form (hidden by default) -->
+    <div class="card" id="createKeyForm" style="display:none;margin-bottom:1rem">
+      <div class="card-header">
+        <span class="card-title">Create New API Key</span>
+        <button class="icon-btn" onclick="document.getElementById('createKeyForm').style.display='none'">✕</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Key Name</label>
+          <input type="text" class="form-input" id="newKeyName" placeholder="e.g. Production, My App">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="newKeyEmail" placeholder="you@email.com">
+        </div>
+      </div>
+      <div style="margin-top:1rem;display:flex;gap:8px">
+        <button class="btn-primary" onclick="createKey()">Generate Key</button>
+        <button class="btn-ghost" onclick="document.getElementById('createKeyForm').style.display='none'">Cancel</button>
+      </div>
+    </div>
+
+    <!-- New key display (hidden until generated) -->
+    <div class="card" id="newKeyDisplay" style="display:none;margin-bottom:1rem;border-color:rgba(29,158,117,0.4)">
+      <div class="card-header">
+        <span class="card-title" style="color:var(--teal-l)">✅ Key Created — Save it now!</span>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:0.75rem">This is shown only once. Copy and store it safely.</p>
+      <div class="key-reveal">
+        <code id="newKeyValue" class="key-code">sx-...</code>
+        <button class="copy-key-btn" onclick="copyNewKey()">Copy</button>
+      </div>
+    </div>
+
+    <!-- Keys list -->
+    <div class="card">
+      <div class="card-header"><span class="card-title">Your API Keys</span></div>
+      <div id="keysList">
+        <div class="empty-state" id="keysEmpty">
+          No API keys yet. Create your first key above.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: Request Logs -->
+  <div class="page" id="page-logs">
+    <div class="page-header">
+      <h1 class="page-title">Request Logs</h1>
+      <p class="page-sub">Recent API requests and responses</p>
+      <button class="btn-ghost" onclick="loadLogs()">↻ Refresh</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Recent Requests</span></div>
+      <div id="logsList">
+        <div class="empty-state">Request logs will appear here after you make API calls.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: Billing -->
+  <div class="page" id="page-billing">
+    <div class="page-header">
+      <h1 class="page-title">Billing & Plan</h1>
+      <p class="page-sub">Manage your subscription</p>
+    </div>
+
+    <!-- Current plan -->
+    <div class="plan-cards">
+      <div class="plan-card" id="planFree">
+        <div class="plan-header">
+          <div class="plan-name">Free</div>
+          <div class="plan-price">$0 <span>/month</span></div>
+        </div>
+        <ul class="plan-features">
+          <li>200 syntheses / month</li>
+          <li>synthex-nova-pro &amp; pulse-1</li>
+          <li>synthex-nova-forge (code)</li>
+          <li>Community support</li>
+        </ul>
+        <div class="plan-current" id="freePlanBtn">Current Plan</div>
+      </div>
+
+      <div class="plan-card featured" id="planPro">
+        <div class="plan-badge">RECOMMENDED</div>
+        <div class="plan-header">
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">$29 <span>/month</span></div>
+        </div>
+        <ul class="plan-features">
+          <li>Unlimited syntheses</li>
+          <li>All 4 models incl. Nexus</li>
+          <li>Full agent trace logs</li>
+          <li>Priority queue</li>
+          <li>API access — 1M tokens/mo</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn-primary plan-btn" onclick="showToast('Pro plan coming soon! Stay tuned.','info')">Upgrade to Pro →</button>
+      </div>
+
+      <div class="plan-card" id="planEnterprise">
+        <div class="plan-header">
+          <div class="plan-name">Enterprise</div>
+          <div class="plan-price">Custom</div>
+        </div>
+        <ul class="plan-features">
+          <li>Private deployment</li>
+          <li>Custom agent configs</li>
+          <li>White-label API</li>
+          <li>SLA guarantees</li>
+          <li>Dedicated support</li>
+          <li>SOC2 &amp; GDPR docs</li>
+        </ul>
+        <button class="btn-ghost plan-btn" onclick="showToast('Contact: enterprise@synthex.ai','info')">Contact Sales</button>
+      </div>
+    </div>
+
+    <!-- API pricing table -->
+    <div class="card" style="margin-top:1.5rem">
+      <div class="card-header"><span class="card-title">API Pricing</span></div>
+      <table class="data-table">
+        <thead><tr><th>Model</th><th>Input (per 1K tokens)</th><th>Output (per 1K tokens)</th><th>Plan</th></tr></thead>
+        <tbody>
+          <tr><td><span class="mono">synthex-nova-swift</span></td><td class="mono" style="color:var(--teal-l)">$0.0005</td><td class="mono" style="color:var(--teal-l)">$0.002</td><td><span class="badge-free">Free</span></td></tr>
+          <tr><td><span class="mono">synthex-nova-pro</span></td><td class="mono" style="color:var(--accent)">$0.003</td><td class="mono" style="color:var(--accent)">$0.012</td><td><span class="badge-free">Free</span></td></tr>
+          <tr><td><span class="mono">synthex-nova-forge</span></td><td class="mono" style="color:var(--amber-l)">$0.002</td><td class="mono" style="color:var(--amber-l)">$0.008</td><td><span class="badge-free">Free</span></td></tr>
+          <tr><td><span class="mono">synthex-nova-ultra</span></td><td class="mono" style="color:var(--coral-l)">$0.010</td><td class="mono" style="color:var(--coral-l)">$0.040</td><td><span class="badge-pro">Pro</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAGE: Settings -->
+  <div class="page" id="page-settings">
+    <div class="page-header">
+      <h1 class="page-title">Settings</h1>
+      <p class="page-sub">Configure your dashboard connection</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Backend Connection</span></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Backend URL</label>
+          <input type="text" class="form-input" id="settingBackendUrl" placeholder="http://localhost:8000">
+          <div class="form-hint">Your deployed ZIP 1 Railway URL, e.g. https://synthex-prod.up.railway.app</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">API Key (sx-...)</label>
+          <input type="password" class="form-input" id="settingApiKey" placeholder="sx-...">
+          <div class="form-hint">Create one via POST /v1/keys or the API Keys page above</div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;display:flex;gap:8px;align-items:center">
+        <button class="btn-primary" onclick="saveAllSettings()">Save Settings</button>
+        <button class="btn-ghost" onclick="testConnection()">Test Connection</button>
+        <span id="connectionResult" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <div class="card-header"><span class="card-title">Dashboard Info</span></div>
+      <div class="info-list">
+        <div class="info-row"><span class="info-label">Dashboard Version</span><span class="mono" style="font-size:12px">v1.0.0</span></div>
+        <div class="info-row"><span class="info-label">Backend Status</span><span id="infoStatus" style="font-size:12px;color:var(--muted)">Unknown</span></div>
+        <div class="info-row"><span class="info-label">API Version</span><span class="mono" style="font-size:12px">v1</span></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Configure Modal (first-time setup) -->
+<div class="modal-overlay" id="configModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="logo" style="margin-bottom:4px">
+          <div class="logo-mark" style="width:24px;height:24px;font-size:13px">S</div>
+          <span class="logo-word">ynth<span class="logo-accent">ex</span></span>
+        </div>
+        <h3>Connect to your backend</h3>
+      </div>
+    </div>
+    <div class="modal-body">
+      <label class="form-label">Backend URL (ZIP 1 Railway deploy)</label>
+      <input type="text" class="form-input" id="configUrl" placeholder="https://your-app.up.railway.app" style="margin-bottom:1rem">
+
+      <label class="form-label">Synthex API Key (sx-...)</label>
+      <input type="password" class="form-input" id="configKey" placeholder="sx-...">
+
+      <div class="form-hint" style="margin-top:0.75rem">
+        Don't have a key? Leave it blank and create one from the API Keys page after connecting.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal()">Skip for now</button>
+      <button class="btn-primary" onclick="saveConfig()">Connect Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toastContainer" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

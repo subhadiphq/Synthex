@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthex AI Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#07061A;--brand:#534AB7;--accent:#A09EF5;--teal:#1D9E75;--teal-l:#5DCAA5;--text:#E2E0FF;--muted:#6A68A0;--border:rgba(160,158,245,0.12);--font:'Sora',sans-serif;--mono:'DM Mono',monospace;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-weight:300;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+.logo-mark{width:56px;height:56px;background:var(--brand);border-radius:14px;display:grid;place-items:center;font-size:26px;font-weight:600;color:#EEEDFE;margin:0 auto 1.5rem;box-shadow:0 0 40px rgba(83,74,183,0.3);}
+h1{font-size:2rem;font-weight:500;text-align:center;margin-bottom:.5rem;letter-spacing:-.02em;}
+h1 span{color:var(--accent);}
+p{color:var(--muted);text-align:center;margin-bottom:2.5rem;font-size:.95rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:720px;width:100%;}
+.card{background:rgba(15,14,42,0.9);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-decoration:none;transition:border-color .2s,transform .15s;display:flex;flex-direction:column;gap:8px;}
+.card:hover{border-color:rgba(160,158,245,0.3);transform:translateY(-2px);}
+.card-icon{font-size:24px;}
+.card-title{font-size:15px;font-weight:500;color:var(--text);}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.card-badge{font-family:var(--mono);font-size:10px;color:var(--teal-l);margin-top:4px;}
+footer{margin-top:3rem;font-family:var(--mono);font-size:11px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="logo-mark">S</div>
+<h1>Synth<span>ex</span> AI Platform</h1>
+<p>Many minds. One answer. — Choose where to go:</p>
+
+<div class="grid">
+  <a class="card" href="chat/index.html">
+    <div class="card-icon">💬</div>
+    <div class="card-title">Chat Interface</div>
+    <div class="card-desc">Talk to Synthex AI. Multi-agent responses with markdown, code highlighting, and streaming.</div>
+    <div class="card-badge">synthex-nova-pro · synthex-nova-swift · synthex-nova-forge</div>
+  </a>
+  <a class="card" href="dashboard/index.html">
+    <div class="card-icon">📊</div>
+    <div class="card-title">Developer Dashboard</div>
+    <div class="card-desc">Manage API keys, view usage analytics, billing, and request logs.</div>
+    <div class="card-badge">API Keys · Usage · Billing</div>
+  </a>
+  <a class="card" href="landing/index.html">
+    <div class="card-icon">🌐</div>
+    <div class="card-title">Landing Page</div>
+    <div class="card-desc">Public-facing Synthex website. Share with users and investors.</div>
+    <div class="card-badge">Public · Marketing</div>
+  </a>
+  <a class="card" href="docs/docs.html">
+    <div class="card-icon">📖</div>
+    <div class="card-title">API Documentation</div>
+    <div class="card-desc">Complete API reference, quickstart guides, code examples in Python & JS.</div>
+    <div class="card-badge">REST API · OpenAI-compatible</div>
+  </a>
+</div>
+<footer>Synthex AI Platform v1.0 · Many minds. One answer.</footer>
+</body>
+</html>

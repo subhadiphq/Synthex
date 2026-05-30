@@ -1,0 +1,1 @@
+"""Synthex API Routes."""

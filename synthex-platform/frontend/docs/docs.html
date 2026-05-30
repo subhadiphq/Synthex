@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthex — API Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/markdown.css">
+<style>
+body { display:block; overflow:auto; height:auto; }
+body::before { display:none; }
+.docs-wrap { max-width:860px; margin:0 auto; padding:4rem 2rem 6rem; }
+.docs-nav { position:fixed; top:0; left:0; right:0; background:rgba(10,8,24,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:14px 2rem; display:flex; align-items:center; justify-content:space-between; z-index:100; }
+.docs-content { margin-top:5rem; }
+.endpoint { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; margin-bottom:1.25rem; }
+.endpoint-method { display:inline-flex; align-items:center; gap:8px; margin-bottom:1rem; }
+.method-badge { font-family:var(--mono); font-size:11px; padding:3px 10px; border-radius:20px; font-weight:500; }
+.method-post { background:rgba(29,158,117,0.15); color:var(--teal-l); border:1px solid rgba(29,158,117,0.3); }
+.method-get  { background:rgba(83,74,183,0.15); color:var(--accent); border:1px solid rgba(83,74,183,0.3); }
+.endpoint-path { font-family:var(--mono); font-size:14px; color:var(--text); }
+.endpoint-desc { font-size:13px; color:var(--muted); margin-bottom:1rem; line-height:1.6; }
+</style>
+</head>
+<body>
+<nav class="docs-nav">
+  <a href="index.html" class="logo" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+    <div class="logo-mark">S</div>
+    <span class="logo-word">ynth<span class="logo-accent">ex</span></span>
+  </a>
+  <div style="display:flex;gap:1rem;align-items:center;">
+    <a href="index.html" style="color:var(--muted);font-size:13px;text-decoration:none;">Chat</a>
+    <span style="font-size:13px;color:var(--accent);">API Docs</span>
+  </div>
+</nav>
+
+<div class="docs-wrap docs-content">
+  <h1 style="font-family:'Georgia',serif;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem;">Synthex API Reference</h1>
+  <p style="color:var(--muted);margin-bottom:3rem;">Multi-agent AI platform API. OpenAI-compatible. Many minds. One answer.</p>
+
+  <h2 style="font-size:1.1rem;font-weight:500;margin-bottom:1rem;color:var(--text);">Authentication</h2>
+  <div class="endpoint">
+    <p class="endpoint-desc">Include your <code>sx-...</code> API key as a Bearer token in all requests.</p>
+    <pre style="background:#050412;border-radius:var(--radius);padding:1rem;font-family:var(--mono);font-size:13px;overflow-x:auto;"><code style="color:#C3E88D;">Authorization: Bearer sx-your-key-here</code></pre>
+  </div>
+
+  <h2 style="font-size:1.1rem;font-weight:500;margin:2rem 0 1rem;color:var(--text);">Models</h2>
+  <div class="endpoint">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead><tr>
+        <th style="text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:400;">Model ID</th>
+        <th style="text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:400;">Description</th>
+        <th style="text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:400;">Agents</th>
+        <th style="text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:400;">Speed</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:8px 12px;font-family:var(--mono);font-size:12px;color:var(--accent);">synthex-nova-ultra</td><td style="padding:8px 12px;color:var(--text2);">Ultra · Maximum intelligence</td><td style="padding:8px 12px;color:var(--muted);">5</td><td style="padding:8px 12px;color:var(--muted);">~8s</td></tr>
+        <tr><td style="padding:8px 12px;font-family:var(--mono);font-size:12px;color:var(--accent);">synthex-nova-pro</td><td style="padding:8px 12px;color:var(--text2);">Pro · Best balance (recommended)</td><td style="padding:8px 12px;color:var(--muted);">3</td><td style="padding:8px 12px;color:var(--muted);">~3s</td></tr>
+        <tr><td style="padding:8px 12px;font-family:var(--mono);font-size:12px;color:var(--accent);">synthex-nova-swift</td><td style="padding:8px 12px;color:var(--text2);">Flash · Fastest response</td><td style="padding:8px 12px;color:var(--muted);">1</td><td style="padding:8px 12px;color:var(--muted);">&lt;1s</td></tr>
+        <tr><td style="padding:8px 12px;font-family:var(--mono);font-size:12px;color:var(--accent);">synthex-nova-forge</td><td style="padding:8px 12px;color:var(--text2);">Code · Specialist coding</td><td style="padding:8px 12px;color:var(--muted);">2</td><td style="padding:8px 12px;color:var(--muted);">~2s</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 style="font-size:1.1rem;font-weight:500;margin:2rem 0 1rem;color:var(--text);">Endpoints</h2>
+
+  <div class="endpoint">
+    <div class="endpoint-method">
+      <span class="method-badge method-post">POST</span>
+      <span class="endpoint-path">/v1/messages</span>
+    </div>
+    <p class="endpoint-desc">Main synthesis endpoint. Runs multi-agent pipeline.</p>
+    <pre style="background:#050412;border-radius:var(--radius);padding:1rem;font-family:var(--mono);font-size:12px;overflow-x:auto;line-height:1.7;"><code><span style="color:#C792EA;">curl</span> <span style="color:#C3E88D;">https://your-backend.railway.app/v1/messages</span> \
+  <span style="color:#A09EF5;">-H</span> <span style="color:#C3E88D;">"Authorization: Bearer sx-..."</span> \
+  <span style="color:#A09EF5;">-H</span> <span style="color:#C3E88D;">"Content-Type: application/json"</span> \
+  <span style="color:#A09EF5;">-d</span> <span style="color:#C3E88D;">'{
+    "model": "synthex-nova-pro",
+    "messages": [{"role": "user", "content": "Explain quantum computing"}],
+    "max_tokens": 1000
+  }'</span></code></pre>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-method">
+      <span class="method-badge method-post">POST</span>
+      <span class="endpoint-path">/v1/chat/completions</span>
+    </div>
+    <p class="endpoint-desc">OpenAI-compatible endpoint. Drop-in replacement — change only <code>base_url</code>.</p>
+    <pre style="background:#050412;border-radius:var(--radius);padding:1rem;font-family:var(--mono);font-size:12px;overflow-x:auto;line-height:1.7;"><code><span style="color:#C792EA;">import</span> <span style="color:#A09EF5;">openai</span>
+
+client = openai.<span style="color:#5DCAA5;">OpenAI</span>(
+    <span style="color:#FFCB6B;">api_key</span>=<span style="color:#C3E88D;">"sx-your-key"</span>,
+    <span style="color:#FFCB6B;">base_url</span>=<span style="color:#C3E88D;">"https://your-backend.railway.app/v1"</span>
+)
+
+response = client.chat.completions.<span style="color:#5DCAA5;">create</span>(
+    <span style="color:#FFCB6B;">model</span>=<span style="color:#C3E88D;">"synthex-nova-pro"</span>,
+    <span style="color:#FFCB6B;">messages</span>=[{<span style="color:#C3E88D;">"role"</span>: <span style="color:#C3E88D;">"user"</span>, <span style="color:#C3E88D;">"content"</span>: <span style="color:#C3E88D;">"Hello!"</span>}]
+)</code></pre>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-method">
+      <span class="method-badge method-post">POST</span>
+      <span class="endpoint-path">/v1/keys</span>
+    </div>
+    <p class="endpoint-desc">Create a new API key. The full key is returned only once — save it immediately.</p>
+    <pre style="background:#050412;border-radius:var(--radius);padding:1rem;font-family:var(--mono);font-size:12px;overflow-x:auto;line-height:1.7;"><code><span style="color:#C792EA;">curl</span> <span style="color:#A09EF5;">-X POST</span> <span style="color:#C3E88D;">https://your-backend.railway.app/v1/keys</span> \
+  <span style="color:#A09EF5;">-H</span> <span style="color:#C3E88D;">"Content-Type: application/json"</span> \
+  <span style="color:#A09EF5;">-d</span> <span style="color:#C3E88D;">'{"name": "My Key", "email": "you@email.com", "plan": "free"}'</span></code></pre>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-method">
+      <span class="method-badge method-get">GET</span>
+      <span class="endpoint-path">/v1/usage</span>
+    </div>
+    <p class="endpoint-desc">Get usage statistics for your API key.</p>
+  </div>
+
+  <div class="endpoint">
+    <div class="endpoint-method">
+      <span class="method-badge method-get">GET</span>
+      <span class="endpoint-path">/health</span>
+    </div>
+    <p class="endpoint-desc">Check if the Synthex backend is running. No auth required.</p>
+  </div>
+
+  <p style="margin-top:3rem;font-size:12px;color:var(--muted);text-align:center;">
+    Synthex AI Platform v1.0 · <a href="index.html" style="color:var(--accent);">Open Chat →</a>
+  </p>
+</div>
+</body>
+</html>

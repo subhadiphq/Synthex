@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthex — Many minds. One answer.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0A0818;
+    --ink2: #12102A;
+    --surface: #1C1957;
+    --brand: #534AB7;
+    --accent: #A09EF5;
+    --mist: #EEEDFE;
+    --teal: #1D9E75;
+    --teal-l: #5DCAA5;
+    --text: #E8E6FF;
+    --muted: #7B79AA;
+    --border: rgba(160,158,245,0.15);
+    --mono: 'DM Mono', monospace;
+    --sans: 'Sora', sans-serif;
+    --serif: 'Playfair Display', serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* === NOISE TEXTURE OVERLAY === */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* === NAV === */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    background: rgba(10,8,24,0.7);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 34px; height: 34px;
+    background: var(--brand);
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--mist);
+    flex-shrink: 0;
+  }
+
+  .logo-word {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .logo-word span { color: var(--accent); }
+
+  nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--brand);
+    color: var(--mist) !important;
+    padding: 7px 18px;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: #6760CC !important; }
+
+  /* === HERO === */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    overflow: hidden;
+  }
+
+  /* Glowing orbs */
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(83,74,183,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -55%);
+    pointer-events: none;
+  }
+
+  .orb1 {
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+    top: 20%; left: 10%;
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .orb2 {
+    position: absolute;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(160,158,245,0.1) 0%, transparent 70%);
+    bottom: 25%; right: 12%;
+    border-radius: 50%;
+    animation: float 10s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-24px); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(83,74,183,0.18);
+    border: 1px solid rgba(160,158,245,0.25);
+    color: var(--accent);
+    font-size: 12px;
+    font-family: var(--mono);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.04em;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--teal-l);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--brand);
+    color: var(--mist);
+    border: none;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: #6760CC; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ghost:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  /* Code snippet preview */
+  .hero-code {
+    margin-top: 3.5rem;
+    background: rgba(28,25,87,0.5);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    max-width: 480px;
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    animation: fadeUp 0.8s 0.4s ease both;
+    position: relative;
+    z-index: 1;
+  }
+
+  .code-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .d1 { background: #FF5F57; }
+  .d2 { background: #FEBC2E; }
+  .d3 { background: #28C840; }
+  .code-title { color: var(--muted); font-size: 11px; margin-left: auto; }
+
+  .line { display: flex; gap: 8px; margin: 3px 0; }
+  .ln { color: rgba(123,121,170,0.4); min-width: 16px; text-align: right; user-select: none; }
+  .key { color: #C792EA; }
+  .str { color: #C3E88D; }
+  .val { color: var(--accent); }
+  .cmt { color: var(--muted); }
+  .ok { color: var(--teal-l); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === SECTION BASE === */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--teal-l);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  /* === HOW IT WORKS === */
+  .how { padding: 7rem 0; }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 3.5rem;
+  }
+
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: padding-left 0.2s;
+  }
+  .step:first-child { padding-top: 0; }
+  .step:last-child { border-bottom: none; }
+  .step:hover { padding-left: 6px; }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--brand);
+    background: rgba(83,74,183,0.15);
+    border: 1px solid rgba(83,74,183,0.3);
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step h3 {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Agent diagram */
+  .agent-diagram {
+    background: rgba(28,25,87,0.3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .agent-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .agent-card {
+    flex: 1;
+    background: rgba(83,74,183,0.12);
+    border: 1px solid rgba(160,158,245,0.18);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .agent-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .agent-role {
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .agent-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--teal-l);
+    margin-top: 8px;
+  }
+
+  .status-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--teal-l);
+    animation: pulse 1.5s infinite;
+  }
+
+  .synth-card {
+    background: rgba(29,158,117,0.1);
+    border: 1px solid rgba(29,158,117,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .synth-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal-l);
+    margin-bottom: 3px;
+  }
+
+  .synth-answer {
+    color: var(--text);
+    font-size: 12px;
+  }
+
+  /* === FEATURES === */
+  .features { padding: 0 0 7rem; }
+
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 3.5rem;
+  }
+
+  .feat-card {
+    background: var(--ink2);
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+  .feat-card:hover { background: rgba(28,25,87,0.8); }
+
+  .feat-icon {
+    width: 40px; height: 40px;
+    background: rgba(83,74,183,0.15);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    margin-bottom: 1rem;
+  }
+
+  .feat-card h3 {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .feat-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* === MODELS === */
+  .models { padding: 0 0 7rem; }
+
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 3.5rem;
+  }
+
+  .model-card {
+    background: var(--ink2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .model-card:hover { border-color: rgba(160,158,245,0.4); transform: translateY(-3px); }
+
+  .model-card.featured {
+    border-color: rgba(29,158,117,0.4);
+    background: rgba(29,158,117,0.05);
+  }
+
+  .model-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .model-badge.ultra { background: rgba(83,74,183,0.2); color: var(--accent); border: 1px solid rgba(83,74,183,0.3); }
+  .model-badge.pro { background: rgba(29,158,117,0.15); color: var(--teal-l); border: 1px solid rgba(29,158,117,0.3); }
+  .model-badge.flash { background: rgba(239,159,39,0.1); color: #EF9F27; border: 1px solid rgba(239,159,39,0.2); }
+  .model-badge.code { background: rgba(196,114,255,0.1); color: #C472FF; border: 1px solid rgba(196,114,255,0.2); }
+
+  .model-name {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .model-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .model-stat {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* === PRICING === */
+  .pricing { padding: 0 0 7rem; }
+
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 3.5rem;
+  }
+
+  .price-card {
+    background: var(--ink2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.2s;
+  }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-card.highlighted { border-color: rgba(83,74,183,0.5); background: rgba(28,25,87,0.6); }
+
+  .price-tier {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .price-amount {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .price-unit {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-family: var(--mono);
+  }
+
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .price-features li {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .price-features li::before {
+    content: '✓';
+    color: var(--teal-l);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* === CTA SECTION === */
+  .cta-section {
+    padding: 6rem 0 8rem;
+    text-align: center;
+  }
+
+  .cta-inner {
+    background: rgba(28,25,87,0.5);
+    border: 1px solid rgba(160,158,245,0.2);
+    border-radius: 24px;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-inner::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(83,74,183,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .cta-inner h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .cta-inner p {
+    color: var(--muted);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .api-key-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(10,8,24,0.7);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .api-key-preview span { color: var(--accent); }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  /* Divider */
+  .section-divider {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--border), transparent);
+    margin: 0 auto 5rem;
+  }
+
+  /* Scroll fade-in */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">S</div>
+    <span class="logo-word">ynth<span>ex</span></span>
+  </a>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#models">Models</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#docs">Docs</a></li>
+  </ul>
+  <a href="#start" class="nav-cta" style="color:var(--mist);text-decoration:none;font-size:13px;padding:7px 18px;background:var(--brand);border-radius:6px;font-weight:500;">Get API key →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="orb1"></div>
+  <div class="orb2"></div>
+
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    Multi-agent API · Now in beta
+  </div>
+
+  <h1>Many minds.<br><em>One answer.</em></h1>
+
+  <p class="hero-sub">
+    Synthex orchestrates multiple AI agents that collaborate, critique, and synthesize — delivering answers no single model can match.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#start" class="btn-primary">
+      Start building
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#how" class="btn-ghost">See how it works</a>
+  </div>
+
+  <div class="hero-code">
+    <div class="code-bar">
+      <div class="dot d1"></div>
+      <div class="dot d2"></div>
+      <div class="dot d3"></div>
+      <span class="code-title">synthex_quickstart.py</span>
+    </div>
+    <div class="line"><span class="ln">1</span><span class="key">import</span> <span class="val">synthex</span></div>
+    <div class="line"><span class="ln">2</span></div>
+    <div class="line"><span class="ln">3</span><span class="val">client</span> = <span class="val">synthex</span>.<span class="ok">Client</span>(<span class="key">api_key</span>=<span class="str">"sx-..."</span>)</div>
+    <div class="line"><span class="ln">4</span></div>
+    <div class="line"><span class="ln">5</span><span class="val">response</span> = <span class="val">client</span>.<span class="ok">synthesize</span>(</div>
+    <div class="line"><span class="ln">6</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">model</span>=<span class="str">"synthex-nova-pro"</span>,</div>
+    <div class="line"><span class="ln">7</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">prompt</span>=<span class="str">"Analyze our Q3 strategy..."</span>,</div>
+    <div class="line"><span class="ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">agents</span>=<span class="val">3</span>&nbsp;&nbsp;<span class="cmt"># multi-agent depth</span></div>
+    <div class="line"><span class="ln">9</span>)</div>
+    <div class="line"><span class="ln">10</span><span class="cmt"># → Synthesized from 3 agents ✓</span></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// how it works</div>
+      <h2 class="section-title">Intelligence by<br>collaboration</h2>
+      <p class="section-sub">Three specialized agents work in parallel, then a synthesizer distills the best of all perspectives.</p>
+    </div>
+
+    <div class="how-grid reveal">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div>
+            <h3>Your request arrives</h3>
+            <p>Call <code style="font-family:var(--mono);font-size:12px;color:var(--accent);">api.synthex.ai</code> like any API. Synthex handles everything under the hood.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div>
+            <h3>Orchestrator dispatches agents</h3>
+            <p>The master orchestrator analyzes your prompt and assigns specific sub-tasks to each specialist agent.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div>
+            <h3>Agents collaborate</h3>
+            <p>Analyst, Expert, and Critic agents work simultaneously — reviewing and improving each other's reasoning.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div>
+            <h3>One synthesized answer</h3>
+            <p>The synthesizer distills all perspectives into one precise, verified response. Only your brand name is visible.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-diagram">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:4px;">// agents active</div>
+        <div class="agent-row">
+          <div class="agent-card">
+            <div class="agent-name">Agent α · Analyst</div>
+            <div class="agent-role">Pattern recognition & analysis</div>
+            <div class="agent-status"><span class="status-dot"></span>processing</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-name">Agent β · Expert</div>
+            <div class="agent-role">Deep domain knowledge</div>
+            <div class="agent-status"><span class="status-dot"></span>processing</div>
+          </div>
+        </div>
+        <div class="agent-card" style="width:50%;align-self:center;">
+          <div class="agent-name">Agent γ · Critic</div>
+          <div class="agent-role">Verify & challenge assumptions</div>
+          <div class="agent-status"><span class="status-dot"></span>processing</div>
+        </div>
+        <div style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);">↓ synthesizing</div>
+        <div class="synth-card">
+          <div>
+            <div class="synth-label">⚡ Synthex result</div>
+            <div class="synth-answer">Verified multi-perspective answer</div>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#1D9E75" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// capabilities</div>
+      <h2 class="section-title">Built for what<br>matters most</h2>
+    </div>
+    <div class="feat-grid reveal">
+      <div class="feat-card">
+        <div class="feat-icon">⚙️</div>
+        <h3>Your brand, always</h3>
+        <p>Users only see your API name. The multi-model engine is completely invisible — your product, your identity.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧠</div>
+        <h3>Multi-agent depth</h3>
+        <p>Complex tasks broken into parallel reasoning chains. No single-point-of-failure. Every answer cross-verified.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <h3>Drop-in compatible</h3>
+        <p>Familiar REST API, Python and JS SDKs. Migrate from OpenAI or Anthropic in under 10 minutes.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔒</div>
+        <h3>Enterprise security</h3>
+        <p>Zero data retention, SOC 2 compliant, private deployments available. Your data never trains any model.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <h3>Built-in observability</h3>
+        <p>Full agent traces, latency breakdowns, per-model cost tracking. See exactly what each agent contributed.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🌐</div>
+        <h3>Model agnostic</h3>
+        <p>Route to Claude, GPT, Gemini, or open-source models. Swap models without changing a line of your code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section class="models" id="models">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// models</div>
+      <h2 class="section-title">Pick your depth</h2>
+      <p class="section-sub">From lightning-fast completions to maximum-reasoning multi-agent synthesis.</p>
+    </div>
+    <div class="model-grid reveal">
+      <div class="model-card">
+        <div class="model-badge ultra">NOVA ULTRA/div>
+        <div class="model-name">synthex-nova-ultra</div>
+        <div class="model-desc">Maximum reasoning with up to 5 collaborative agents. For the hardest problems.</div>
+        <div class="model-stat">⬡ 5 agents · ~8s</div>
+      </div>
+      <div class="model-card featured">
+        <div class="model-badge pro">NOVA PRO ✦ recommended/div>
+        <div class="model-name">synthex-nova-pro</div>
+        <div class="model-desc">3-agent synthesis with optimal speed-quality balance. Best for production use.</div>
+        <div class="model-stat">⬡ 3 agents · ~3s</div>
+      </div>
+      <div class="model-card">
+        <div class="model-badge flash">NOVA SWIFT/div>
+        <div class="model-name">synthex-nova-swift</div>
+        <div class="model-desc">Single-agent, low-latency completions. Ideal for real-time applications.</div>
+        <div class="model-stat">⬡ 1 agent · &lt;1s</div>
+      </div>
+      <div class="model-card">
+        <div class="model-badge code">NOVA FORGE/div>
+        <div class="model-name">synthex-nova-forge</div>
+        <div class="model-desc">Specialist agents tuned for code generation, review, and debugging.</div>
+        <div class="model-stat">⬡ 2 agents · ~2s</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// pricing</div>
+      <h2 class="section-title">Simple, honest<br>pricing</h2>
+      <p class="section-sub">No hidden agent fees. Pay per synthesis, not per underlying model call.</p>
+    </div>
+    <div class="price-grid reveal">
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">$0</div>
+        <div class="price-unit">free forever</div>
+        <ul class="price-features">
+          <li>100 syntheses / month</li>
+          <li>synthex-nova-swift access</li>
+          <li>Community support</li>
+          <li>Public rate limits</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="width:100%;justify-content:center;font-size:13px;">Get started free</a>
+      </div>
+      <div class="price-card highlighted">
+        <div class="price-tier">Pro</div>
+        <div class="price-amount">$49</div>
+        <div class="price-unit">/month + usage</div>
+        <ul class="price-features">
+          <li>Unlimited syntheses</li>
+          <li>All models including Ultra</li>
+          <li>Priority queue</li>
+          <li>Full agent trace logs</li>
+          <li>Custom agent configs</li>
+        </ul>
+        <a href="#" class="btn-primary" style="width:100%;justify-content:center;font-size:13px;">Start Pro trial</a>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Enterprise</div>
+        <div class="price-amount">Custom</div>
+        <div class="price-unit">volume discounts</div>
+        <ul class="price-features">
+          <li>Private deployment</li>
+          <li>SLA guarantees</li>
+          <li>Dedicated support</li>
+          <li>White-label options</li>
+          <li>SOC 2 & GDPR ready</li>
+        </ul>
+        <a href="#" class="btn-ghost" style="width:100%;justify-content:center;font-size:13px;">Contact sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="start">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <h2>Ready to synthesize?</h2>
+      <p>Get your API key and make your first multi-agent call in minutes.</p>
+      <div class="api-key-preview">
+        <span>sx-</span>••••••••••••••••••••••••
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="opacity:0.5"><rect x="2" y="4" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 4V3a2 2 0 014 0v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;position:relative;">
+        <a href="#" class="btn-primary">Generate API key →</a>
+        <a href="#docs" class="btn-ghost">Read the docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo" style="text-decoration:none;">
+    <div class="logo-mark" style="width:26px;height:26px;font-size:14px;border-radius:7px;">S</div>
+    <span class="logo-word" style="font-size:14px;">ynth<span>ex</span></span>
+  </a>
+  <p>© 2025 Synthex. Many minds. One answer.</p>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Docs</a>
+    <a href="#">Status</a>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>

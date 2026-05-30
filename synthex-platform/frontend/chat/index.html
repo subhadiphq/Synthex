@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthex — AI Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/chat.css">
+<link rel="stylesheet" href="css/markdown.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+
+<!-- Setup Modal -->
+<div class="modal-overlay" id="setupModal">
+  <div class="modal">
+    <div class="modal-title">Welcome to Synthex</div>
+    <div class="modal-sub">Configure your connection to start using multi-agent AI.</div>
+    <div class="field">
+      <label>Backend URL</label>
+      <input type="text" id="setupBackendUrl" placeholder="https://your-backend.railway.app" value="http://localhost:8000">
+    </div>
+    <div class="field">
+      <label>API Key (sx-...)</label>
+      <input type="text" id="setupApiKey" placeholder="sx-your-key-here">
+    </div>
+    <p style="font-size:12px;color:var(--text3);margin-top:4px;margin-bottom:14px;">
+      No key? Go to <a href="../dashboard/index.html" style="color:var(--accent)">Dashboard → API Keys</a> to create one.
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveSetup()">Connect & Start</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('setupModal').classList.add('hidden')">Skip</button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <a href="../index.html" class="logo">
+      <div class="logo-mark">S</div>
+      <span class="logo-text">ynth<span>ex</span></span>
+    </a>
+    <button class="icon-btn" id="newChatBtn" title="New conversation">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v13M1 7.5h13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <!-- Model Selector -->
+  <div class="model-wrap">
+    <div class="model-label">Model</div>
+    <div class="model-btn" id="modelBtn" onclick="toggleModelDropdown()">
+      <div class="model-btn-left">
+        <span class="model-icon" id="curModelIcon">⚡</span>
+        <div>
+          <div class="model-name" id="curModelName">Synthex Arc</div>
+          <div class="model-sub" id="curModelSub">Pro · Recommended</div>
+        </div>
+      </div>
+      <svg class="model-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="model-dropdown" id="modelDropdown">
+      <div class="model-opt" data-model="synthex-nova-ultra" data-icon="🌌" data-name="Nova Ultra" data-sub="Ultra · 5 agents · ~8s">
+        <div class="opt-left"><span class="opt-icon">🔮</span><div><div class="opt-name">Nova Ultra</div><div class="opt-sub">Ultra · 5 agents · ~8s</div></div></div>
+        <span class="opt-badge badge-ultra">ULTRA</span>
+      </div>
+      <div class="model-opt active" data-model="synthex-nova-pro" data-icon="⚡" data-name="Nova Pro" data-sub="Pro · Recommended">
+        <div class="opt-left"><span class="opt-icon">⚡</span><div><div class="opt-name">Nova Pro</div><div class="opt-sub">Pro · 3 agents · ~3s</div></div></div>
+        <span class="opt-badge badge-pro">PRO</span>
+      </div>
+      <div class="model-opt" data-model="synthex-nova-swift" data-icon="💫" data-name="Nova Swift" data-sub="Flash · Fastest">
+        <div class="opt-left"><span class="opt-icon">💫</span><div><div class="opt-name">Nova Swift</div><div class="opt-sub">Flash · 1 agent · &lt;1s</div></div></div>
+        <span class="opt-badge badge-flash">FLASH</span>
+      </div>
+      <div class="model-opt" data-model="synthex-nova-forge" data-icon="🔥" data-name="Nova Forge" data-sub="Code Specialist">
+        <div class="opt-left"><span class="opt-icon">🔧</span><div><div class="opt-name">Nova Forge</div><div class="opt-sub">Code · 2 agents · ~2s</div></div></div>
+        <span class="opt-badge badge-code">CODE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conversations -->
+  <div class="conv-scroll">
+    <div class="conv-section">Conversations</div>
+    <div id="convList"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <div class="lang-toggle">
+      <span class="lang-toggle-label">বাংলা Mode</span>
+      <div class="toggle" id="langToggle" onclick="toggleLang()"><div class="toggle-dot"></div></div>
+    </div>
+    <a href="../dashboard/index.html" class="sidebar-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+      Dashboard
+    </a>
+    <a href="../docs/docs.html" class="sidebar-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="currentColor" stroke-width="1.3" rx="1"/><path d="M4 5h6M4 7h6M4 9h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      API Docs
+    </a>
+    <div class="sidebar-link" onclick="openSetup()" style="cursor:pointer">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.9 2.9l1.06 1.06M10.04 10.04l1.06 1.06M2.9 11.1l1.06-1.06M10.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Settings
+    </div>
+  </div>
+</aside>
+
+<!-- ── CHAT AREA ─────────────────────────────────────────────────────── -->
+<main class="chat-area" id="chatArea">
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <button class="icon-btn" id="sidebarToggle" onclick="toggleSidebar()" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <span class="chat-title" id="chatTitle">New Chat</span>
+    </div>
+    <div class="chat-header-right">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-label" id="statusLabel">Connecting...</span>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages-wrap" id="messagesWrap">
+    <div class="messages-inner" id="messagesInner">
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-logo">S</div>
+        <div class="empty-title">Many minds. One answer.</div>
+        <div class="empty-sub">Synthex orchestrates multiple specialist AI agents to deliver answers no single model can produce.</div>
+        <div class="suggestions" id="suggestions">
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <div class="suggestion-icon">💡</div>
+            <div class="suggestion-text">Explain quantum entanglement in simple terms</div>
+          </div>
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <div class="suggestion-icon">💻</div>
+            <div class="suggestion-text">Write a Python async web scraper with rate limiting</div>
+          </div>
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <div class="suggestion-icon">📊</div>
+            <div class="suggestion-text">Analyze the pros and cons of microservices architecture</div>
+          </div>
+          <div class="suggestion" onclick="useSuggestion(this)">
+            <div class="suggestion-icon">🌏</div>
+            <div class="suggestion-text">বাংলায় কৃত্রিম বুদ্ধিমত্তা সম্পর্কে বলো</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-wrap">
+      <div class="file-preview" id="filePreview" style="display:none"></div>
+      <div class="input-row">
+        <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Upload file">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 10v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2M8 10V2M5 5l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <input type="file" id="fileInput" style="display:none" accept=".py,.js,.ts,.html,.css,.json,.txt,.md,.csv,.zip" onchange="handleFileSelect(this)">
+        <textarea id="chatInput" placeholder="Message Synthex..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <div class="input-actions">
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 2L2 7.5 7 8.5M14 2L8.5 14 7 8.5M14 2L7 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="input-footer">
+        <span class="input-hint">Press <kbd style="font-family:var(--mono);font-size:10px;padding:1px 5px;background:var(--bg3);border-radius:4px;border:1px solid var(--border2)">Enter</kbd> to send · <kbd style="font-family:var(--mono);font-size:10px;padding:1px 5px;background:var(--bg3);border-radius:4px;border:1px solid var(--border2)">Shift+Enter</kbd> for newline</span>
+        <span class="char-count" id="charCount"></span>
+      </div>
+    </div>
+  </div>
+</main>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/markdown.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
